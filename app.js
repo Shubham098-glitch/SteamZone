@@ -7,7 +7,7 @@ const games = [
         originalPrice: 1999,
         price: 249,
         discount: 88,
-        image: 'https://i.imghippo.com/files/E2228ISg.jpg',
+        image: 'https://i.ibb.co/p69zQ8Lw/0b179504-412d-4af7-9e00-3e3d92633577.jpg',
         tags: ['Action', 'Open World', 'Adventure'],
         featured: true
     },
