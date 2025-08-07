@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Games - SteamZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-gamepad text-2xl"></i>
+                <a href="index.html" class="text-2xl font-bold">SteamZone</a>
+            </div>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-blue-200">Home</a>
+                <a href="search.html" class="font-semibold hover:text-blue-200">Search</a>
+                <a href="contact.html" class="hover:text-blue-200">Contact</a>
+                <a href="login.html" id="loginLink" class="hover:text-blue-200">Login</a>
+                <a href="my-orders.html" id="myOrdersLink" class="hidden hover:text-blue-200">My Orders</a>
+                <span id="profileName" class="hidden bg-yellow-500 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold"></span>
+                <button id="logoutBtn" class="hidden hover:text-blue-200">Logout</button>
+            </nav>
+            <button class="md:hidden text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <!-- Search Bar -->
+            <div class="relative mb-8">
+                <input type="text" id="searchInput" 
+                       class="w-full px-6 py-4 rounded-full border-2 border-gray-200 focus:border-blue-500 focus:outline-none"
+                       placeholder="Search for games...">
+                <button id="searchBtn" class="absolute right-2 top-2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- Search Results -->
+            <div id="searchResults" class="space-y-4">
+                <!-- Results will be shown here -->
+                <div class="text-center py-12 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4"></i>
+                    <p>Search for games by name or category</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const searchResults = document.getElementById('searchResults');
+            const loginLink = document.getElementById('loginLink');
+            const myOrdersLink = document.getElementById('myOrdersLink');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Search function
+            function searchGames(query) {
+                if (!query.trim()) {
+                    searchResults.innerHTML = `
+                        <div class="text-center py-12 text-gray-500">
+                            <i class="fas fa-search text-4xl mb-4"></i>
+                            <p>Search for games by name or category</p>
+                        </div>`;
+                    return;
+                }
+
+                const games = getGames();
+                const searchTerm = query.toLowerCase();
+                
+                const results = games.filter(game => 
+                    game.title.toLowerCase().includes(searchTerm) ||
+                    game.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+                );
+
+                displayResults(results);
+            }
+
+            // Display search results
+            function displayResults(games) {
+                if (games.length === 0) {
+                    searchResults.innerHTML = `
+                        <div class="text-center py-12">
+                            <i class="fas fa-gamepad text-4xl text-gray-300 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">No games found</h3>
+                            <p class="text-gray-500">Try different search terms</p>
+                        </div>`;
+                    return;
+                }
+
+                searchResults.innerHTML = games.map(game => `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row hover:shadow-lg transition-shadow duration-200">
+                        <div class="md:w-1/4 bg-gray-100 flex items-center justify-center overflow-hidden">
+                            <img src="${game.image}" alt="${game.title}" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="p-6 md:w-3/4 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2 text-gray-900">${game.title}</h3>
+                                <p class="text-gray-600 mb-4 line-clamp-2">${game.description || 'No description available'}</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    ${game.tags.slice(0, 3).map(tag => `
+                                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                            ${tag}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-4">
+                                <div class="flex items-center gap-2">
+                                    ${game.originalPrice ? `
+                                        <span class="text-gray-400 line-through text-sm">₹${game.originalPrice.toLocaleString()}</span>
+                                        <span class="text-blue-600 font-bold text-lg">₹${game.price.toLocaleString()}</span>
+                                        ${game.discount ? `
+                                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">
+                                                ${game.discount}% OFF
+                                            </span>
+                                        ` : ''}
+                                    ` : `
+                                        <span class="text-blue-600 font-bold text-lg">₹${game.price.toLocaleString()}</span>
+                                    `}
+                                </div>
+                                <a href="game.html?id=${game.id}" class="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-center transition-colors">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Event listeners
+            searchBtn.addEventListener('click', () => searchGames(searchInput.value));
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') searchGames(searchInput.value);
+            });
+
+            // Update auth UI
+            function updateAuthUI() {
+                const user = getCurrentUser();
+                const profileName = document.getElementById('profileName');
+                if (user) {
+                    if(loginLink) loginLink.classList.add('hidden');
+                    if(myOrdersLink) myOrdersLink.classList.remove('hidden');
+                    if(logoutBtn) logoutBtn.classList.remove('hidden');
+                    if(profileName) {
+                        profileName.classList.remove('hidden');
+                        profileName.textContent = user.email.substring(0, 2).toUpperCase();
+                    }
+                } else {
+                    if(loginLink) loginLink.classList.remove('hidden');
+                    if(myOrdersLink) myOrdersLink.classList.add('hidden');
+                    if(logoutBtn) logoutBtn.classList.add('hidden');
+                    if(profileName) profileName.classList.add('hidden');
+                }
+            }
+
+            // Logout
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    logout();
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Initialize
+            updateAuthUI();
+        });
+    </script>
+</body>
+</html>

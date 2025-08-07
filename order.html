@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - SteamZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/app.js"></script>
+    <style>
+        .status-pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .status-verified {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-gamepad text-2xl"></i>
+                <a href="index.html" class="text-2xl font-bold">SteamZone</a>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-blue-200">Home</a>
+                <a href="search.html" class="hover:text-blue-200">Search</a>
+                <a href="contact.html" class="hover:text-blue-200">Contact</a>
+                <a href="login.html" id="loginLink" class="hover:text-blue-200">Login</a>
+                <a href="my-orders.html" id="myOrdersLink" class="hidden hover:text-blue-200">My Orders</a>
+                <button id="logoutBtn" class="hidden hover:text-blue-200">Logout</button>
+            </nav>
+            <button class="md:hidden text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Order Confirmation -->
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto">
+            <!-- Order Status Card -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
+                <div class="p-8 text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-check-circle text-4xl text-green-600" id="orderStatusIcon"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold mb-2">Order Placed Successfully!</h1>
+                    <p class="text-gray-600 mb-6">Your order has been received and is being processed.</p>
+                    
+                    <div class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 status-pending" id="statusBadge">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span>Pending Verification</span>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 text-left">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-blue-700">
+                                    You'll receive your game account details via email within 1-24 hours after payment verification.
+                                    Please check your spam folder if you don't see our email.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                        <a href="index.html" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-center">
+                            Continue Shopping
+                        </a>
+                        <a href="#" id="viewOrderBtn" class="px-6 py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg text-center">
+                            View Order Details
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="border-t border-gray-200 p-6">
+                    <h2 class="text-lg font-semibold mb-4">Order Summary</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Order Number</span>
+                            <span class="font-medium" id="orderId">#---</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Date</span>
+                            <span class="font-medium" id="orderDate">---</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Game</span>
+                            <span class="font-medium" id="orderGame">---</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Amount Paid</span>
+                            <span class="font-medium" id="orderAmount">---</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">UTR Number</span>
+                            <span class="font-mono" id="orderUtr">---</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-xl font-semibold mb-4">What Happens Next?</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <span class="text-blue-600 font-bold">1</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="font-medium text-gray-900">Order Verification</h3>
+                                <p class="mt-1 text-gray-600">We're verifying your payment. This usually takes a few minutes.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <span class="text-blue-600 font-bold">2</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="font-medium text-gray-900">Account Preparation</h3>
+                                <p class="mt-1 text-gray-600">Once verified, we'll prepare your game account with care.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <span class="text-blue-600 font-bold">3</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="font-medium text-gray-900">Delivery</h3>
+                                <p class="mt-1 text-gray-600">You'll receive an email with your account details within 24 hours.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Support Card -->
+            <div class="mt-8 bg-blue-50 rounded-lg p-6 text-center">
+                <i class="fas fa-headset text-4xl text-blue-500 mb-4"></i>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Need Help?</h3>
+                <p class="text-gray-600 mb-4">Our support team is here to help with your order.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="mailto:support@steamzone.com" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        <i class="fas fa-envelope mr-2"></i> Email Us
+                    </a>
+                    <a href="tel:+919876543210" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        <i class="fas fa-phone-alt mr-2"></i> +91 98765 43210
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 SteamZone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get order ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            
+            // Check if user is logged in
+            if (!isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get current user
+            const user = getCurrentUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load order details
+            function loadOrderDetails() {
+                if (!orderId) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Get all orders
+                const orders = JSON.parse(localStorage.getItem('steamzone_orders') || '[]');
+                const order = orders.find(o => o.id === parseInt(orderId));
+                
+                if (!order || order.userId !== user.id) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Update UI with order details
+                document.getElementById('orderId').textContent = `#${order.id}`;
+                document.getElementById('orderDate').textContent = new Date(order.orderDate).toLocaleString();
+                document.getElementById('orderGame').textContent = order.gameTitle;
+                document.getElementById('orderAmount').textContent = `₹${order.price.toLocaleString()}`;
+                document.getElementById('orderUtr').textContent = order.utrNumber;
+                
+                // Update status UI
+                const statusBadge = document.getElementById('statusBadge');
+                const statusIcon = document.getElementById('orderStatusIcon');
+                
+                if (order.status === 'Verified') {
+                    statusBadge.className = 'inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 status-verified';
+                    statusBadge.innerHTML = '<i class="fas fa-check-circle mr-2"></i><span>Verified</span>';
+                    statusIcon.className = 'fas fa-check-circle text-4xl text-green-600';
+                    document.querySelector('h1').textContent = 'Order Verified!';
+                    document.querySelector('p').textContent = 'Your order has been verified and processed.';
+                } else {
+                    // Check if we should simulate verification after some time (for demo)
+                    if (order.status === 'Pending') {
+                        setTimeout(() => {
+                            // In a real app, this would be done by the admin
+                            // For demo, we'll auto-verify after 10 seconds
+                            order.status = 'Verified';
+                            localStorage.setItem('steamzone_orders', JSON.stringify(orders));
+                            
+                            // Update UI
+                            statusBadge.className = 'inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 status-verified';
+                            statusBadge.innerHTML = '<i class="fas fa-check-circle mr-2"></i><span>Verified</span>';
+                            statusIcon.className = 'fas fa-check-circle text-4xl text-green-600';
+                            document.querySelector('h1').textContent = 'Order Verified!';
+                            document.querySelector('p').textContent = 'Your order has been verified and processed.';
+                            
+                            // Show a notification
+                            const notification = document.createElement('div');
+                            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+                            notification.innerHTML = 'Your order has been verified!';
+                            document.body.appendChild(notification);
+                            setTimeout(() => {
+                                notification.remove();
+                            }, 5000);
+                        }, 10000); // 10 seconds for demo
+                    }
+                }
+            }
+            
+            // View order details button
+            document.getElementById('viewOrderBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                const orderDetails = document.querySelector('.border-t');
+                orderDetails.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Update auth UI
+            function updateAuthUI() {
+                const loginLink = document.getElementById('loginLink');
+                const myOrdersLink = document.getElementById('myOrdersLink');
+                const logoutBtn = document.getElementById('logoutBtn');
+                
+                if (isLoggedIn()) {
+                    if (loginLink) loginLink.classList.add('hidden');
+                    if (myOrdersLink) myOrdersLink.classList.remove('hidden');
+                    if (logoutBtn) logoutBtn.classList.remove('hidden');
+                } else {
+                    if (loginLink) loginLink.classList.remove('hidden');
+                    if (myOrdersLink) myOrdersLink.classList.add('hidden');
+                    if (logoutBtn) logoutBtn.classList.add('hidden');
+                }
+            }
+            
+            // Handle logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    logout();
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Initialize the page
+            loadOrderDetails();
+            updateAuthUI();
+        });
+    </script>
+</body>
+</html>

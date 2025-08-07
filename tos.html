@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - SteamZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="app.js"></script>
+    <style>
+        .prose {
+            max-width: 65ch;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .prose h2 {
+            color: #1a365d;
+            font-weight: 600;
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+        .prose p, .prose ul {
+            margin-bottom: 1.25em;
+            line-height: 1.6;
+            color: #4a5568;
+        }
+        .prose ul {
+            padding-left: 1.5em;
+        }
+        .prose li {
+            margin-bottom: 0.5em;
+            position: relative;
+        }
+        .prose li:before {
+            content: "•";
+            color: #4299e1;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-gamepad text-2xl"></i>
+                <a href="index.html" class="text-2xl font-bold">SteamZone</a>
+            </div>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-blue-200">Home</a>
+                <a href="search.html" class="hover:text-blue-200">Search</a>
+                <a href="contact.html" class="hover:text-blue-200">Contact</a>
+                <a href="login.html" id="loginLink" class="hover:text-blue-200">Login</a>
+                <a href="my-orders.html" id="myOrdersLink" class="hidden hover:text-blue-200">My Orders</a>
+                <span id="profileName" class="hidden bg-yellow-500 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold"></span>
+                <button id="logoutBtn" class="hidden hover:text-blue-200">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-12">
+        <div class="prose bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-blue-900 text-white px-6 py-8 text-center">
+                <h1 class="text-3xl font-bold mb-2">Terms of Service</h1>
+                <p class="text-blue-100">Last updated: August 7, 2025</p>
+            </div>
+            
+            <div class="p-8">
+                <p class="text-gray-600 mb-8">
+                    By accessing and using this website, you agree to the following terms and conditions:
+                </p>
+
+                <h2>1. Eligibility</h2>
+                <ul>
+                    <li>You must be 13 years or older to use this platform.</li>
+                    <li>By registering, you confirm that all information provided is accurate and true.</li>
+                </ul>
+
+                <h2>2. Account Responsibility</h2>
+                <ul>
+                    <li>You are solely responsible for maintaining the confidentiality of your login credentials.</li>
+                    <li>You agree not to share your account with others or use someone else's account without permission.</li>
+                </ul>
+
+                <h2>3. Purchases and Payments</h2>
+                <ul>
+                    <li>All purchases are final and non-refundable once the account details are delivered.</li>
+                    <li>You agree to provide valid UPI/PhonePe/Paytm transactions, including the correct UTR/Transaction ID.</li>
+                    <li>Attempting to use fake payment proofs will lead to permanent ban and legal action.</li>
+                </ul>
+
+                <h2>4. Account Delivery</h2>
+                <ul>
+                    <li>Game accounts are usually delivered via Discord or Email within 0–24 hours after payment verification.</li>
+                    <li>Delays may occur during high traffic or manual verification.</li>
+                </ul>
+
+                <h2>5. Prohibited Actions</h2>
+                <p>You agree NOT to:</p>
+                <ul>
+                    <li>Resell purchased accounts without permission</li>
+                    <li>Use scripts/bots to abuse the system</li>
+                    <li>Attempt chargebacks or payment fraud</li>
+                    <li>Post abusive or offensive content</li>
+                </ul>
+
+                <h2>6. No Liability</h2>
+                <ul>
+                    <li>We are not affiliated with Steam, Valve Corporation, or any game publishers.</li>
+                    <li>We are not responsible for any bans, suspensions, or restrictions after the account is handed over.</li>
+                </ul>
+
+                <h2>7. Modifications</h2>
+                <ul>
+                    <li>We reserve the right to update these Terms of Service at any time.</li>
+                    <li>Continued use of the website means you agree to the updated terms.</li>
+                </ul>
+
+                <div class="mt-10 pt-6 border-t border-gray-200">
+                    <p class="text-sm text-gray-500">
+                        If you have any questions about these Terms, please contact us at 
+                        <a href="mailto:steamzone71@gmail.com" class="text-blue-600 hover:underline">steamzone71@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-gamepad text-2xl"></i>
+                        <span class="text-xl font-bold">SteamZone</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-2">© 2025 SteamZone. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-6
+                ">
+                    <a href="privacy.html" class="text-gray-300 hover:text-white">Privacy Policy</a>
+                    <a href="tos.html" class="text-blue-400 font-medium">Terms of Service</a>
+                    <a href="contact.html" class="text-gray-300 hover:text-white">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update auth UI
+            function updateAuthUI() {
+                const user = getCurrentUser();
+                const loginLink = document.getElementById('loginLink');
+                const myOrdersLink = document.getElementById('myOrdersLink');
+                const logoutBtn = document.getElementById('logoutBtn');
+                const profileName = document.getElementById('profileName');
+                
+                if (user) {
+                    if(loginLink) loginLink.classList.add('hidden');
+                    if(myOrdersLink) myOrdersLink.classList.remove('hidden');
+                    if(logoutBtn) logoutBtn.classList.remove('hidden');
+                    if(profileName) {
+                        profileName.classList.remove('hidden');
+                        profileName.textContent = user.email.substring(0, 2).toUpperCase();
+                    }
+                } else {
+                    if(loginLink) loginLink.classList.remove('hidden');
+                    if(myOrdersLink) myOrdersLink.classList.add('hidden');
+                    if(logoutBtn) logoutBtn.classList.add('hidden');
+                    if(profileName) profileName.classList.add('hidden');
+                }
+            }
+
+            // Logout function
+            if (document.getElementById('logoutBtn')) {
+                document.getElementById('logoutBtn').addEventListener('click', function() {
+                    logout();
+                    updateAuthUI();
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Initialize
+            updateAuthUI();
+        });
+    </script>
+</body>
+</html>

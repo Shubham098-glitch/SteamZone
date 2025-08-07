@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Details - SteamZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-gamepad text-2xl"></i>
+                <a href="index.html" class="text-2xl font-bold">SteamZone</a>
+            </div>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-blue-200">Home</a>
+                <a href="search.html" class="hover:text-blue-200">Search</a>
+                <a href="contact.html" class="hover:text-blue-200">Contact</a>
+                <a href="login.html" id="loginLink" class="hover:text-blue-200">Login</a>
+                <a href="my-orders.html" id="myOrdersLink" class="hidden hover:text-blue-200">My Orders</a>
+                <span id="profileName" class="hidden bg-yellow-500 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold"></span>
+                <button id="logoutBtn" class="hidden hover:text-blue-200">Logout</button>
+            </nav>
+            <button class="md:hidden text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Game Details -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="md:flex">
+                <!-- Game Image -->
+                <div class="md:w-1/2 p-6">
+                    <div class="h-96 flex items-center justify-center rounded-lg overflow-hidden">
+                        <span class="text-gray-500 text-xl hidden" id="gameImagePlaceholder">Game Image</span>
+                        <img id="gameImage" src="" alt="Game Image" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- Game Info -->
+                <div class="md:w-1/2 p-6">
+                    <h1 class="text-3xl font-bold mb-2" id="gameTitle">Grand Theft Auto V</h1>
+                    <div class="flex flex-wrap gap-2 mb-4" id="gameTags"></div>
+                    <div class="mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl font-bold text-blue-600" id="gamePrice">₹249</span>
+                            <span class="text-lg text-gray-400 line-through" id="originalPrice">₹1,999</span>
+                            <span class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full" id="discountBadge">88% OFF</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">+ GST if applicable</p>
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-2">Description</h3>
+                        <p class="text-gray-700" id="gameDescription">🎮 Grand Theft Auto V (GTA 5)–</p>
+                    </div>
+                    <button id="purchaseBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        Purchase Now
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Recommended Games -->
+            <div class="p-6 border-t border-gray-200">
+                <h2 class="text-2xl font-bold mb-6">You May Also Like</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="recommendedGames">
+                    <!-- Recommended games will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 SteamZone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = urlParams.get('id');
+            
+            // Load game details
+            if (gameId) {
+                const game = getGameById(gameId);
+                if (game) {
+                    document.title = `${game.title} - SteamZone`;
+                    document.getElementById('gameTitle').textContent = game.title;
+                    document.getElementById('gamePrice').textContent = `₹${game.price.toLocaleString()}`;
+                    document.getElementById('gameDescription').textContent = game.description;
+                    
+                    // Update original price and discount if available
+                    if (game.originalPrice) {
+                        document.getElementById('originalPrice').textContent = `₹${game.originalPrice.toLocaleString()}`;
+                        document.getElementById('originalPrice').style.display = 'inline';
+                        if (game.discount) {
+                            document.getElementById('discountBadge').textContent = `${game.discount}% OFF`;
+                            document.getElementById('discountBadge').style.display = 'inline-block';
+                        } else {
+                            document.getElementById('discountBadge').style.display = 'none';
+                        }
+                    } else {
+                        document.getElementById('originalPrice').style.display = 'none';
+                        document.getElementById('discountBadge').style.display = 'none';
+                    }
+                    
+                    const tagsContainer = document.getElementById('gameTags');
+                    tagsContainer.innerHTML = game.tags.map(tag => 
+                        `<span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">${tag}</span>`
+                    ).join('');
+                    
+                    if (game.image) {
+                        const img = document.getElementById('gameImage');
+                        img.src = game.image;
+                        img.alt = game.title;
+                        img.style.display = 'block';
+                        document.getElementById('gameImagePlaceholder').style.display = 'none';
+                    } else {
+                        document.getElementById('gameImagePlaceholder').style.display = 'flex';
+                        document.getElementById('gameImage').style.display = 'none';
+                    }
+                    
+                    // Load recommended games
+                    const recommendedGames = getRecommendedGames(game.id);
+                    const recommendedContainer = document.getElementById('recommendedGames');
+                    if (recommendedContainer && recommendedGames.length > 0) {
+                        recommendedContainer.innerHTML = recommendedGames.map(recGame => `
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                <a href="game.html?id=${recGame.id}" class="block">
+                                    <div class="h-36 bg-gray-200 overflow-hidden">
+                                        <img src="${recGame.image}" alt="${recGame.title}" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-3">
+                                        <h3 class="font-semibold text-gray-800 truncate">${recGame.title}</h3>
+                                        <div class="flex items-center justify-between mt-2">
+                                            <span class="text-green-600 font-bold">₹${recGame.price.toLocaleString()}</span>
+                                            ${recGame.originalPrice > recGame.price ? 
+                                                `<span class="text-xs text-gray-500 line-through">₹${recGame.originalPrice.toLocaleString()}</span>` : 
+                                                ''
+                                            }
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        `).join('');
+                    }
+                    
+                    updateAuthUI();
+                }
+            }
+            
+            // Handle purchase button
+            document.getElementById('purchaseBtn').addEventListener('click', function() {
+                if (!gameId) return;
+                if (!isLoggedIn()) {
+                    localStorage.setItem('steamzone_redirect', `payment.html?id=${gameId}`);
+                    window.location.href = 'login.html';
+                } else {
+                    window.location.href = `payment.html?id=${gameId}`;
+                }
+            });
+            
+            // Update auth UI
+            function updateAuthUI() {
+                const user = getCurrentUser();
+                const loginLink = document.getElementById('loginLink');
+                const myOrdersLink = document.getElementById('myOrdersLink');
+                const logoutBtn = document.getElementById('logoutBtn');
+                const profileName = document.getElementById('profileName');
+
+                if (user) {
+                    if(loginLink) loginLink.classList.add('hidden');
+                    if(myOrdersLink) myOrdersLink.classList.remove('hidden');
+                    if(logoutBtn) logoutBtn.classList.remove('hidden');
+                    if(profileName) {
+                        profileName.classList.remove('hidden');
+                        profileName.textContent = user.email.substring(0, 2).toUpperCase();
+                    }
+                } else {
+                    if(loginLink) loginLink.classList.remove('hidden');
+                    if(myOrdersLink) myOrdersLink.classList.add('hidden');
+                    if(logoutBtn) logoutBtn.classList.add('hidden');
+                    if(profileName) profileName.classList.add('hidden');
+                }
+            }
+            
+            // Handle logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    logout();
+                    window.location.reload();
+                });
+            }
+            
+            updateAuthUI();
+        });
+    </script>
+</body>
+</html>
